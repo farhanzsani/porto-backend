@@ -12,22 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            // Core data first
             UserSeeder::class,
-            SettingSeeder::class,
-
-            // Technologies
-            TechnologySeeder::class,
-
-            // Experience & Education
-            WorkExperienceSeeder::class,
-            EducationSeeder::class,
-
-            // Content (depends on above data)
-            ProjectSeeder::class,
-
-            // Inquiries
-            InquirySeeder::class,
         ]);
     }
 }
