@@ -201,7 +201,7 @@
                             <!-- Menu Item View Website -->
                             <li>
                                 <a
-                                    href="{{ route('dashboard') }}"
+                                    href="{{ url('/') }}"
                                     target="_blank"
                                     class="menu-item group"
                                 >
@@ -427,7 +427,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('dashboard') }}" target="_blank" class="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                        <a href="{{ url('/') }}" target="_blank" class="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
                                             <svg class="fill-gray-500 group-hover:fill-gray-700 dark:fill-gray-400 dark:group-hover:fill-gray-300" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM7.28867 9.25H4.51877C4.63988 8.3532 4.90665 7.50407 5.29408 6.72713C6.10231 7.83018 6.95047 8.66368 7.28867 9.25ZM4.51877 14.75H7.28867C6.95047 15.3363 6.10231 16.1698 5.29408 17.2729C4.90665 16.4959 4.63988 15.6468 4.51877 14.75ZM9.04623 14.75H14.9538C14.4405 16.5922 13.3296 18.0033 12 18.847C10.6704 18.0033 9.55953 16.5922 9.04623 14.75ZM9.04623 9.25C9.55953 7.40779 10.6704 5.99671 12 5.15298C13.3296 5.99671 14.4405 7.40779 14.9538 9.25H9.04623ZM16.7113 9.25C17.0495 8.66368 17.8977 7.83018 18.7059 6.72713C19.0933 7.50407 19.3601 8.3532 19.4812 9.25H16.7113ZM16.7113 14.75H19.4812C19.3601 15.6468 19.0933 16.4959 18.7059 17.2729C17.8977 16.1698 17.0495 15.3363 16.7113 14.75ZM14.9538 9.25H9.04623C9.55953 7.40779 10.6704 5.99671 12 5.15298C13.3296 5.99671 14.4405 7.40779 14.9538 9.25Z" fill=""/>
                                             </svg>
