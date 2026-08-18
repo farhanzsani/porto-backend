@@ -25,7 +25,8 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        // New users are logged out and redirected to login (no dashboard access for non-admin)
+        $this->assertGuest();
+        $response->assertRedirect(route('login'));
     }
 }

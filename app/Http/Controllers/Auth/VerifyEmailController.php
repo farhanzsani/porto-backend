@@ -14,14 +14,26 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+        $user = $request->user();
+        
+        if ($user->hasVerifiedEmail()) {
+            // Redirect berdasarkan role
+            if (in_array($user->role, ['admin', 'editor'])) {
+                return redirect()->intended(route('admin.dashboard', absolute: false).'?verified=1');
+            }
+            
+            return redirect()->route('login')->with('error', 'You do not have permission to access the dashboard.');
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
         }
 
-        return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+        // Redirect berdasarkan role
+        if (in_array($user->role, ['admin', 'editor'])) {
+            return redirect()->intended(route('admin.dashboard', absolute: false).'?verified=1');
+        }
+        
+        return redirect()->route('login')->with('error', 'Email verified, but you need admin approval to access the dashboard.');
     }
 }

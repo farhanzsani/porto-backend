@@ -32,7 +32,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // User biasa tidak punya akses dashboard, redirect ke login
+        Auth::guard('web')->logout();
+        return redirect()->route('login')->with('error', 'You do not have permission to access the dashboard.');
     }
 
     /**

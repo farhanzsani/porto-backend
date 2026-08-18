@@ -26,8 +26,9 @@ class AuthenticationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        // Regular users are logged out and redirected to login (no dashboard access)
+        $this->assertGuest();
+        $response->assertRedirect(route('login'));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void

@@ -46,6 +46,13 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect berdasarkan role
+        if (in_array($user->role, ['admin', 'editor'])) {
+            return redirect(route('admin.dashboard', absolute: false));
+        }
+
+        // User biasa tidak punya akses dashboard
+        Auth::guard('web')->logout();
+        return redirect()->route('login')->with('error', 'Registration successful, but you need admin approval to access the dashboard.');
     }
 }

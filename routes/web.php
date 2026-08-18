@@ -18,16 +18,8 @@ Route::get('/', function () {
         return redirect()->route('admin.dashboard');
     }
 
-    if ($user) {
-        return redirect()->route('dashboard');
-    }
-
     return redirect()->route('login');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
