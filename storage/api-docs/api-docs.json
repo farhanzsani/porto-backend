@@ -1,0 +1,846 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Portfolio CMS API",
+        "description": "Public API consumed by the React frontend. All endpoints are public and return a consistent `{ success, message, data }` envelope.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+        "/api/educations": {
+            "get": {
+                "tags": [
+                    "Education"
+                ],
+                "summary": "List educations",
+                "description": "Returns education history ordered by start date (most recent first).",
+                "operationId": "5f6ab16f677f54c17a04f0f192494425",
+                "responses": {
+                    "200": {
+                        "description": "List of educations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Educations retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Education"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/inquiries": {
+            "post": {
+                "tags": [
+                    "Inquiries"
+                ],
+                "summary": "Submit a contact inquiry",
+                "description": "Stores a contact form submission. Rate limited to 10 requests per minute.",
+                "operationId": "269bb5eebed19ac08aaddefb0aac7c3b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreInquiryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Inquiry submitted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry submitted successfully."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "id": 6
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "The email field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many attempts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Too Many Attempts."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "List projects",
+                "description": "Returns a paginated list of projects, optionally filtered by technology slug.",
+                "operationId": "6644832a74c939ef72853c80759c43af",
+                "parameters": [
+                    {
+                        "name": "tech",
+                        "in": "query",
+                        "description": "Filter by technology slug",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of projects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Projects retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Project"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object",
+                                            "example": {
+                                                "current_page": 1,
+                                                "last_page": 2,
+                                                "per_page": 12,
+                                                "total": 23
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object",
+                                            "example": {
+                                                "first": "http://localhost:8000/api/projects?page=1",
+                                                "last": "http://localhost:8000/api/projects?page=2",
+                                                "prev": null,
+                                                "next": "http://localhost:8000/api/projects?page=2"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not Found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projects/{slug}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get a single project",
+                "description": "Returns project detail including media and technologies. Increments the view count.",
+                "operationId": "fb97830901e8b49aa7b2c835f08aa7cc",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Project slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Project detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Project retrieved successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Project"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Project not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Project not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/site": {
+            "get": {
+                "tags": [
+                    "Site"
+                ],
+                "summary": "Get public site settings",
+                "description": "Returns general, contact, social and feature settings. Cached for 1 hour.",
+                "operationId": "218113f1d956ea7a64881fa221db0bd2",
+                "responses": {
+                    "200": {
+                        "description": "Site settings retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Site settings retrieved successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SiteSettings"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not Found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/technologies": {
+            "get": {
+                "tags": [
+                    "Technologies"
+                ],
+                "summary": "List technologies",
+                "description": "Returns all technologies (skills). Pass `featured=1` to only get featured ones.",
+                "operationId": "f8c35e279e688813ca411918a071ef68",
+                "parameters": [
+                    {
+                        "name": "featured",
+                        "in": "query",
+                        "description": "Filter only featured technologies",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of technologies",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Technologies retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Technology"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/work-experiences": {
+            "get": {
+                "tags": [
+                    "Work Experience"
+                ],
+                "summary": "List work experiences",
+                "description": "Returns work history ordered by start date (most recent first).",
+                "operationId": "830ca5bda03b89ba4e1802cabbafdb71",
+                "responses": {
+                    "200": {
+                        "description": "List of work experiences",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Work experiences retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/WorkExperience"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StoreInquiryRequest": {
+                "description": "Contact form submission",
+                "required": [
+                    "name",
+                    "email",
+                    "message"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Anderson"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@company.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+1 (555) 234-5678",
+                        "nullable": true
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Anderson Media",
+                        "nullable": true
+                    },
+                    "budget_range": {
+                        "type": "string",
+                        "example": "$5,000 - $10,000",
+                        "nullable": true
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Hello, we would like to discuss a project."
+                    }
+                },
+                "type": "object"
+            },
+            "Education": {
+                "description": "Education entry",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "institution_name": {
+                        "type": "string",
+                        "example": "University of Technology"
+                    },
+                    "degree": {
+                        "type": "string",
+                        "example": "Bachelor of Science"
+                    },
+                    "field_of_study": {
+                        "type": "string",
+                        "example": "Computer Science"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Focused on software engineering and web development.",
+                        "nullable": true
+                    },
+                    "institution_logo": {
+                        "type": "string",
+                        "example": "/storage/educations/logo.png",
+                        "nullable": true
+                    },
+                    "institution_url": {
+                        "type": "string",
+                        "example": "https://university.example.com",
+                        "nullable": true
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "Boston, MA",
+                        "nullable": true
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2012-09-01"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2016-05-31",
+                        "nullable": true
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "grade": {
+                        "type": "string",
+                        "example": "3.8 GPA",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ProjectMedia": {
+                "description": "Media attached to a project",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "file_path": {
+                        "type": "string",
+                        "example": "/storage/projects/media/photo.jpg"
+                    },
+                    "file_type": {
+                        "type": "string",
+                        "example": "image",
+                        "enum": [
+                            "image",
+                            "video",
+                            "document"
+                        ]
+                    },
+                    "mime_type": {
+                        "type": "string",
+                        "example": "image/jpeg"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Dashboard screenshot",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Project": {
+                "description": "Project",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "ecommerce-platform"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "E-Commerce Platform"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A full-featured e-commerce platform with payment integration"
+                    },
+                    "content": {
+                        "description": "HTML content, only on detail endpoint",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "featured_image": {
+                        "type": "string",
+                        "example": "/storage/projects/featured/cover.jpg",
+                        "nullable": true
+                    },
+                    "client": {
+                        "type": "string",
+                        "example": "Retail Corp",
+                        "nullable": true
+                    },
+                    "project_url": {
+                        "type": "string",
+                        "example": "https://ecommerce.example.com",
+                        "nullable": true
+                    },
+                    "github_url": {
+                        "type": "string",
+                        "example": "https://github.com/username/ecommerce-platform",
+                        "nullable": true
+                    },
+                    "view_count": {
+                        "type": "integer",
+                        "example": 245
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-08-13T10:00:00+00:00"
+                    },
+                    "technologies": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Technology"
+                        }
+                    },
+                    "media": {
+                        "description": "Only on detail endpoint",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectMedia"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "SiteSettings": {
+                "description": "Public site settings",
+                "properties": {
+                    "general": {
+                        "type": "object",
+                        "example": {
+                            "site_name": "My Portfolio",
+                            "site_tagline": "Full Stack Developer & Tech Enthusiast",
+                            "site_description": "Portfolio and blog of a passionate full stack developer",
+                            "site_logo": null,
+                            "site_favicon": null
+                        }
+                    },
+                    "contact": {
+                        "type": "object",
+                        "example": {
+                            "contact_email": "hello@example.com",
+                            "contact_phone": "+1 (555) 123-4567",
+                            "contact_location": "San Francisco, CA"
+                        }
+                    },
+                    "social": {
+                        "type": "object",
+                        "example": {
+                            "github": "https://github.com/username",
+                            "linkedin": "https://linkedin.com/in/username",
+                            "twitter": "https://twitter.com/username",
+                            "instagram": "https://instagram.com/username",
+                            "youtube": ""
+                        }
+                    },
+                    "features": {
+                        "type": "object",
+                        "example": {
+                            "enable_projects": true,
+                            "enable_contact_form": true,
+                            "items_per_page": 12
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Technology": {
+                "description": "Technology / skill",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "react"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "React"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "JavaScript library for building user interfaces",
+                        "nullable": true
+                    },
+                    "icon": {
+                        "type": "string",
+                        "example": "devicon-react-original",
+                        "nullable": true
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "#61DAFB",
+                        "nullable": true
+                    },
+                    "proficiency_level": {
+                        "type": "integer",
+                        "example": 90
+                    },
+                    "years_experience": {
+                        "type": "number",
+                        "example": 4,
+                        "nullable": true
+                    },
+                    "is_featured": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "WorkExperience": {
+                "description": "Work experience entry",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "company_name": {
+                        "type": "string",
+                        "example": "Tech Startup Inc."
+                    },
+                    "position": {
+                        "type": "string",
+                        "example": "Senior Full Stack Developer"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Led the development of a SaaS platform serving 10,000+ users."
+                    },
+                    "company_logo": {
+                        "type": "string",
+                        "example": "/storage/work-experiences/logo.png",
+                        "nullable": true
+                    },
+                    "company_url": {
+                        "type": "string",
+                        "example": "https://techstartup.example.com",
+                        "nullable": true
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "San Francisco, CA (Remote)",
+                        "nullable": true
+                    },
+                    "employment_type": {
+                        "type": "string",
+                        "example": "full_time",
+                        "enum": [
+                            "full_time",
+                            "part_time",
+                            "contract",
+                            "freelance",
+                            "internship"
+                        ]
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2021-06-01"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Site",
+            "description": "Public site settings"
+        },
+        {
+            "name": "Projects",
+            "description": "Portfolio projects"
+        },
+        {
+            "name": "Technologies",
+            "description": "Technologies / skills"
+        },
+        {
+            "name": "Work Experience",
+            "description": "Work history"
+        },
+        {
+            "name": "Education",
+            "description": "Education history"
+        },
+        {
+            "name": "Inquiries",
+            "description": "Contact form submissions"
+        }
+    ]
+}
