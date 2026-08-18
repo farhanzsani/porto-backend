@@ -10,6 +10,7 @@ use OpenApi\Attributes as OA;
     description: 'Public API consumed by the React frontend. All endpoints are public and return a consistent `{ success, message, data }` envelope.'
 )]
 #[OA\Server(url: L5_SWAGGER_CONST_HOST, description: 'Local server')]
+#[OA\Server(url: 'http://backend.vellysianazharina.my.id/api', description: 'Production server')]
 #[OA\Tag(name: 'Site', description: 'Public site settings')]
 #[OA\Tag(name: 'Projects', description: 'Portfolio projects')]
 #[OA\Tag(name: 'Technologies', description: 'Technologies / skills')]
