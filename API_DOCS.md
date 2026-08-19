@@ -328,6 +328,46 @@ Returns all active certificates ordered by issue date (most recent first).
 }
 ```
 
+#### `GET /api/certificates/{id}`
+
+Returns a single active certificate by ID.
+
+**Path Parameters**
+
+| Parameter | Type | Description |
+|---|---|---|
+| `id` | integer | Certificate ID |
+
+**Response `200`**
+```json
+{
+  "success": true,
+  "message": "Certificate retrieved successfully.",
+  "data": {
+    "id": 1,
+    "title": "AWS Certified Developer",
+    "issuing_organization": "Amazon Web Services",
+    "issue_date": "2024-01-15",
+    "expiry_date": "2027-01-15",
+    "credential_id": "ABC123XYZ",
+    "credential_url": "https://aws.amazon.com/verification/ABC123XYZ",
+    "image_path": "/storage/certificates/aws-cert.png",
+    "description": "Associate-level certification.",
+    "is_active": true,
+    "is_expired": false,
+    "created_at": "2024-01-15 00:00:00"
+  }
+}
+```
+
+**Response `404`**
+```json
+{
+  "success": false,
+  "message": "Certificate not found."
+}
+```
+
 ---
 
 ### Inquiries

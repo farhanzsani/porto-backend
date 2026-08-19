@@ -54,6 +54,72 @@
                 }
             }
         },
+        "/api/certificates/{id}": {
+            "get": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Get a single certificate",
+                "description": "Returns a single active certificate by ID.",
+                "operationId": "024dfce6ad73506037ed5e0b89e5c654",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Certificate ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Certificate detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Certificate retrieved successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Certificate"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Certificate not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Certificate not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/cvs": {
             "get": {
                 "tags": [

@@ -25,6 +25,7 @@ Route::get('/cvs', [CvController::class, 'index'])->name('api.cvs.index');
 Route::get('/cvs/{cv}/download', [CvController::class, 'download'])->name('api.cvs.download');
 
 Route::get('/certificates', [CertificateController::class, 'index'])->name('api.certificates.index');
+Route::get('/certificates/{id}', [CertificateController::class, 'show'])->name('api.certificates.show');
 
 Route::post('/inquiries', [InquiryController::class, 'store'])
     ->middleware('throttle:10,1')
