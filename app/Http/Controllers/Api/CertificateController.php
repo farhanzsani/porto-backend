@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     path: '/api/certificates',
     summary: 'List active certificates',
     description: 'Returns all active certificates ordered by issue date (most recent first).',
-    tags: ['Certificate'],
+    tags: ['Certificates'],
     responses: [
         new OA\Response(response: 200, description: 'List of certificates', content: new OA\JsonContent(properties: [
             new OA\Property(property: 'success', type: 'boolean', example: true),

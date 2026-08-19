@@ -19,7 +19,7 @@
         "/api/certificates": {
             "get": {
                 "tags": [
-                    "Certificate"
+                    "Certificates"
                 ],
                 "summary": "List active certificates",
                 "description": "Returns all active certificates ordered by issue date (most recent first).",
@@ -1054,12 +1054,12 @@
             "description": "CV files for download"
         },
         {
-            "name": "Inquiries",
-            "description": "Contact form submissions"
+            "name": "Certificates",
+            "description": "Certificates and credentials"
         },
         {
-            "name": "Certificate",
-            "description": "Certificate"
+            "name": "Inquiries",
+            "description": "Contact form submissions"
         }
     ]
 }
