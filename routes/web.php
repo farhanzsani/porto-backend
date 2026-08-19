@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\CvController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EducationController;
@@ -37,6 +38,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('educations', EducationController::class)->except(['show']);
     Route::resource('users', UserController::class)->except(['show']);
     Route::resource('cvs', CvController::class)->except(['show']);
+    Route::resource('certificates', CertificateController::class)->except(['show']);
 
     Route::get('inquiries', [InquiryController::class, 'index'])->name('inquiries.index');
     Route::get('inquiries/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');
@@ -49,3 +51,4 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 });
 
 require __DIR__.'/auth.php';
+

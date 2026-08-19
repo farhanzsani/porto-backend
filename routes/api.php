@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CertificateController;
 use App\Http\Controllers\Api\CvController;
 use App\Http\Controllers\Api\EducationController;
 use App\Http\Controllers\Api\InquiryController;
@@ -23,6 +24,9 @@ Route::get('/educations', [EducationController::class, 'index'])->name('api.educ
 Route::get('/cvs', [CvController::class, 'index'])->name('api.cvs.index');
 Route::get('/cvs/{cv}/download', [CvController::class, 'download'])->name('api.cvs.download');
 
+Route::get('/certificates', [CertificateController::class, 'index'])->name('api.certificates.index');
+
 Route::post('/inquiries', [InquiryController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('api.inquiries.store');
+

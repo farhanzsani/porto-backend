@@ -7,11 +7,119 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000",
+            "url": "http://my-default-host.com",
             "description": "Local server"
+        },
+        {
+            "url": "http://backend.vellysianazharina.my.id",
+            "description": "Production server"
         }
     ],
     "paths": {
+        "/api/certificates": {
+            "get": {
+                "tags": [
+                    "Certificate"
+                ],
+                "summary": "List active certificates",
+                "description": "Returns all active certificates ordered by issue date (most recent first).",
+                "operationId": "4f7c8c10e43f6b85f720c1fb2fecbb15",
+                "responses": {
+                    "200": {
+                        "description": "List of certificates",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Certificates retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Certificate"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cvs": {
+            "get": {
+                "tags": [
+                    "CV"
+                ],
+                "summary": "List active CVs",
+                "description": "Returns all active CV files available for download.",
+                "operationId": "a9dbb13368c553cf8cd91c77f78f645c",
+                "responses": {
+                    "200": {
+                        "description": "List of CVs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CVs retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Cv"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cvs/{id}/download": {
+            "get": {
+                "tags": [
+                    "CV"
+                ],
+                "summary": "Download a CV file",
+                "description": "Streams the CV file for download.",
+                "operationId": "9dadd93e251edceddccdb3eb9c6b8dd4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File download"
+                    },
+                    "404": {
+                        "description": "CV not found"
+                    }
+                }
+            }
+        },
         "/api/educations": {
             "get": {
                 "tags": [
@@ -501,6 +609,109 @@
                 },
                 "type": "object"
             },
+            "Certificate": {
+                "description": "Certificate entry",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "AWS Certified Developer"
+                    },
+                    "issuing_organization": {
+                        "type": "string",
+                        "example": "Amazon Web Services"
+                    },
+                    "issue_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-01-15"
+                    },
+                    "expiry_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2027-01-15",
+                        "nullable": true
+                    },
+                    "credential_id": {
+                        "type": "string",
+                        "example": "ABC123XYZ",
+                        "nullable": true
+                    },
+                    "credential_url": {
+                        "type": "string",
+                        "example": "https://aws.amazon.com/verification/ABC123XYZ",
+                        "nullable": true
+                    },
+                    "image_path": {
+                        "type": "string",
+                        "example": "/storage/certificates/aws-cert.png",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Associate-level certification for AWS cloud development.",
+                        "nullable": true
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_expired": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Cv": {
+                "description": "CV file entry",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "My CV 2024"
+                    },
+                    "original_filename": {
+                        "type": "string",
+                        "example": "cv-john-doe.pdf"
+                    },
+                    "mime_type": {
+                        "type": "string",
+                        "example": "application/pdf"
+                    },
+                    "file_size": {
+                        "type": "integer",
+                        "example": 204800
+                    },
+                    "file_size_formatted": {
+                        "type": "string",
+                        "example": "200 KB"
+                    },
+                    "download_url": {
+                        "type": "string",
+                        "example": "https://example.com/api/cvs/1/download"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Education": {
                 "description": "Education entry",
                 "properties": {
@@ -839,8 +1050,16 @@
             "description": "Education history"
         },
         {
+            "name": "CV",
+            "description": "CV files for download"
+        },
+        {
             "name": "Inquiries",
             "description": "Contact form submissions"
+        },
+        {
+            "name": "Certificate",
+            "description": "Certificate"
         }
     ]
 }

@@ -154,6 +154,20 @@
                             </li>
                             <!-- Menu Item CV -->
 
+                            <!-- Menu Item Certificates -->
+                            <li>
+                                <a
+                                    href="{{ route('admin.certificates.index') }}"
+                                    class="menu-item group {{ request()->routeIs('admin.certificates.*') ? 'menu-item-active' : 'menu-item-inactive' }}"
+                                >
+                                    <svg class="{{ request()->routeIs('admin.certificates.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a5 5 0 100 10A5 5 0 0012 2zM9 7a3 3 0 116 0 3 3 0 01-6 0zm-4.472 5.553A1 1 0 015.5 12h13a1 1 0 01.972.757l1.5 6A1 1 0 0120 20H4a1 1 0 01-.972-1.243l1.5-6zM5.677 18h12.646l-1-4H6.677l-1 4z" fill=""/>
+                                    </svg>
+                                    <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">Certificates</span>
+                                </a>
+                            </li>
+                            <!-- Menu Item Certificates -->
+
                             <!-- Menu Item Inquiries -->
                             <li>
                                 <a

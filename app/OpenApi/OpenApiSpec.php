@@ -17,6 +17,7 @@ use OpenApi\Attributes as OA;
 #[OA\Tag(name: 'Work Experience', description: 'Work history')]
 #[OA\Tag(name: 'Education', description: 'Education history')]
 #[OA\Tag(name: 'CV', description: 'CV files for download')]
+#[OA\Tag(name: 'Certificates', description: 'Certificates and credentials')]
 #[OA\Tag(name: 'Inquiries', description: 'Contact form submissions')]
 class OpenApiSpec
 {
