@@ -40,7 +40,7 @@ class InquiryController extends Controller
         ]);
 
         $inquiry->update([
-            'status' => $validated['status'],
+            'status'     => $validated['status'],
             'replied_at' => $validated['status'] === 'replied' ? ($inquiry->replied_at ?? now()) : $inquiry->replied_at,
         ]);
 
@@ -55,15 +55,26 @@ class InquiryController extends Controller
 
         InquiryReply::create([
             'inquiry_id' => $inquiry->id,
-            'user_id' => auth()->id(),
-            'message' => $validated['message'],
+            'user_id'    => auth()->id(),
+            'message'    => $validated['message'],
         ]);
 
         $inquiry->update([
-            'status' => 'replied',
+            'status'     => 'replied',
             'replied_at' => now(),
             'replied_by' => auth()->id(),
         ]);
+
+        // Send reply email to the inquiry submitter
+        try {
+            Mail::to($inquiry->email)
+                ->send(new InquiryReplyMail($inquiry, $validated['message']));
+        } catch (\Throwable $e) {
+            Log::error('Failed to send inquiry reply email', [
+                'inquiry_id' => $inquiry->id,
+                'error'      => $e->getMessage(),
+            ]);
+        }
 
         return back()->with('success', 'Reply sent successfully.');
     }

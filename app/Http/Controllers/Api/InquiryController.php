@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\StoreInquiryRequest;
+use App\Mail\NewInquiryNotification;
 use App\Models\Inquiry;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use OpenApi\Attributes as OA;
 
 #[OA\Post(
@@ -39,10 +42,21 @@ class InquiryController extends BaseApiController
     {
         $inquiry = Inquiry::create([
             ...$request->validated(),
-            'status' => 'new',
+            'status'     => 'new',
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
+
+        // Notify admin via email
+        try {
+            Mail::to(env('ADMIN_NOTIFICATION_EMAIL', config('mail.from.address')))
+                ->send(new NewInquiryNotification($inquiry));
+        } catch (\Throwable $e) {
+            Log::error('Failed to send new inquiry notification email', [
+                'inquiry_id' => $inquiry->id,
+                'error'      => $e->getMessage(),
+            ]);
+        }
 
         return $this->success(
             ['id' => $inquiry->id],

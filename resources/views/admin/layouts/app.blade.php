@@ -140,6 +140,20 @@
                             </li>
                             <!-- Menu Item Education -->
 
+                            <!-- Menu Item CV -->
+                            <li>
+                                <a
+                                    href="{{ route('admin.cvs.index') }}"
+                                    class="menu-item group {{ request()->routeIs('admin.cvs.*') ? 'menu-item-active' : 'menu-item-inactive' }}"
+                                >
+                                    <svg class="{{ request()->routeIs('admin.cvs.*') ? 'menu-item-icon-active' : 'menu-item-icon-inactive' }}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4 4a2 2 0 012-2h8a1 1 0 01.707.293l4 4A1 1 0 0119 7v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm9 1.414V7h1.586L13 5.414zM6 4v16h11V9h-3a1 1 0 01-1-1V4H6zm2 9a1 1 0 011-1h6a1 1 0 110 2H9a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2H9a1 1 0 01-1-1z" fill=""/>
+                                    </svg>
+                                    <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">CV Files</span>
+                                </a>
+                            </li>
+                            <!-- Menu Item CV -->
+
                             <!-- Menu Item Inquiries -->
                             <li>
                                 <a

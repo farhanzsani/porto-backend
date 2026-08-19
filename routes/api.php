@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CvController;
 use App\Http\Controllers\Api\EducationController;
 use App\Http\Controllers\Api\InquiryController;
 use App\Http\Controllers\Api\ProjectController;
@@ -18,6 +19,9 @@ Route::get('/technologies', [TechnologyController::class, 'index'])->name('api.t
 Route::get('/work-experiences', [WorkExperienceController::class, 'index'])->name('api.work-experiences.index');
 
 Route::get('/educations', [EducationController::class, 'index'])->name('api.educations.index');
+
+Route::get('/cvs', [CvController::class, 'index'])->name('api.cvs.index');
+Route::get('/cvs/{cv}/download', [CvController::class, 'download'])->name('api.cvs.download');
 
 Route::post('/inquiries', [InquiryController::class, 'store'])
     ->middleware('throttle:10,1')

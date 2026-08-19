@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CvController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EducationController;
 use App\Http\Controllers\Admin\InquiryController;
@@ -35,6 +36,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('work-experiences', WorkExperienceController::class)->except(['show']);
     Route::resource('educations', EducationController::class)->except(['show']);
     Route::resource('users', UserController::class)->except(['show']);
+    Route::resource('cvs', CvController::class)->except(['show']);
 
     Route::get('inquiries', [InquiryController::class, 'index'])->name('inquiries.index');
     Route::get('inquiries/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');
