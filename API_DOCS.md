@@ -343,9 +343,6 @@ Triggers an email notification to the admin.
 |---|---|---|---|
 | `name` | string | yes | Full name (max 255) |
 | `email` | string | yes | Valid email address |
-| `phone` | string | no | Phone number |
-| `company` | string | no | Company name |
-| `budget_range` | string | no | Estimated budget |
 | `message` | string | yes | Inquiry message |
 
 **Example Request**
@@ -353,9 +350,6 @@ Triggers an email notification to the admin.
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "phone": "08123456789",
-  "company": "PT Example",
-  "budget_range": "5-10 juta",
   "message": "Halo, saya tertarik dengan jasa Anda."
 }
 ```
