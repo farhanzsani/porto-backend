@@ -7,6 +7,7 @@
 
     <title>{{ config('app.name', 'Vellysia Dashboard') }} - @yield('title', 'Admin')</title>
 
+    <style>[x-cloak]{display:none!important}</style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body
@@ -17,13 +18,14 @@
          window.addEventListener('scroll', () => {
              stickyMenu = window.scrollY > 20;
              scrollTop = window.scrollY > 300;
-         });"
+         });
+         setTimeout(() => loaded = false, 500);"
     :class="{'dark bg-gray-900': darkMode === true}"
 >
     <!-- ===== Preloader Start ===== -->
     <div
         x-show="loaded"
-        x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})"
+        x-cloak
         x-transition:leave="transition ease-in-out duration-500"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
@@ -563,6 +565,7 @@
     <!-- ===== Scroll To Top Start ===== -->
     <button
         x-show="scrollTop"
+        x-cloak
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-4"
         x-transition:enter-end="opacity-100 translate-y-0"
