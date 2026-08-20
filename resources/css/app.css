@@ -1,5 +1,8 @@
 @plugin "@tailwindcss/forms";
 
+/* Safelist classes used by Alpine.js x-transition at runtime */
+@source inline("{transition,ease-in,ease-out,ease-in-out,duration-150,duration-200,duration-300,duration-500,opacity-0,opacity-100,scale-95,scale-100,-translate-y-2,translate-y-0,translate-y-4}");
+
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap")
 layer(base);
 
