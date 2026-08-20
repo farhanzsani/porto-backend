@@ -24,8 +24,8 @@
 >
     <!-- ===== Preloader Start ===== -->
     <div
-        :class="loaded ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
-        class="fixed left-0 top-0 z-999999 flex h-screen w-screen flex-col items-center justify-center bg-white transition-opacity duration-500 dark:bg-black"
+        id="preloader"
+        class="fixed left-0 top-0 z-999999 flex h-screen w-screen flex-col items-center justify-center bg-white dark:bg-black"
     >
         <div class="relative flex items-center justify-center">
             <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-200 border-t-brand-500"></div>
@@ -560,17 +560,11 @@
 
     <!-- ===== Scroll To Top Start ===== -->
     <button
-        x-show="scrollTop"
-        x-cloak
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 translate-y-4"
-        x-transition:enter-end="opacity-100 translate-y-0"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 translate-y-0"
-        x-transition:leave-end="opacity-0 translate-y-4"
-        @click="window.scrollTo({top: 0, behavior: 'smooth'})"
-        class="fixed bottom-8 right-8 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-brand-500 text-white shadow-lg transition-colors hover:bg-brand-600 focus:outline-none"
+        id="scroll-to-top"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="fixed bottom-8 right-8 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-brand-500 text-white shadow-lg hover:bg-brand-600 focus:outline-none"
         aria-label="Scroll to top"
+        style="opacity:0; transform:translateY(16px); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events:none;"
     >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 15l-6-6-6 6"/>
