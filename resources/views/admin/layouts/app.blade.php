@@ -13,16 +13,29 @@
     x-data="{ page: '', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
     x-init="
          darkMode = JSON.parse(localStorage.getItem('darkMode'));
-         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)));
+         window.addEventListener('scroll', () => {
+             stickyMenu = window.scrollY > 20;
+             scrollTop = window.scrollY > 300;
+         });"
     :class="{'dark bg-gray-900': darkMode === true}"
 >
     <!-- ===== Preloader Start ===== -->
     <div
         x-show="loaded"
-        x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 400)})"
-        class="fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white dark:bg-black"
+        x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})"
+        x-transition:leave="transition ease-in-out duration-500"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed left-0 top-0 z-999999 flex h-screen w-screen flex-col items-center justify-center bg-white dark:bg-black"
     >
-        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-500 border-t-transparent"></div>
+        <div class="relative flex items-center justify-center">
+            <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-200 border-t-brand-500"></div>
+            <svg class="absolute h-7 w-7 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+        </div>
+        <p class="mt-4 text-sm font-medium text-gray-400 dark:text-gray-500 animate-pulse">Loading...</p>
     </div>
     <!-- ===== Preloader End ===== -->
 
@@ -276,7 +289,8 @@
             <!-- ===== Header Start ===== -->
             <header
                 x-data="{menuToggle: false}"
-                class="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900"
+                :class="stickyMenu ? 'shadow-md bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm' : 'bg-white dark:bg-gray-900'"
+                class="sticky top-0 z-99999 flex w-full border-gray-200 transition-all duration-300 lg:border-b dark:border-gray-800"
             >
                 <div class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6">
                     <div class="flex w-full items-center justify-between gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4 dark:border-gray-800">
@@ -367,6 +381,12 @@
                                 <!-- Dropdown Start -->
                                 <div
                                     x-show="dropdownOpen"
+                                    x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                                    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                                    x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
                                     class="shadow-theme-lg absolute -right-[240px] mt-[17px] flex max-h-[480px] w-[350px] flex-col rounded-2xl border border-gray-200 bg-white p-3 sm:w-[361px] lg:right-0 dark:border-gray-800 dark:bg-gray-dark"
                                 >
                                     <div class="mb-3 flex items-center justify-between border-b border-gray-100 pb-3 dark:border-gray-800">
@@ -438,6 +458,12 @@
                             <!-- Dropdown Start -->
                             <div
                                 x-show="dropdownOpen"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
                                 class="shadow-theme-lg absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-dark"
                             >
                                 <div>
@@ -523,7 +549,7 @@
             @endif
 
             <!-- ===== Main Content Start ===== -->
-            <main>
+            <main class="page-enter">
                 <div class="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6">
                     @yield('content')
                 </div>
@@ -533,5 +559,24 @@
         <!-- ===== Content Area End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
+
+    <!-- ===== Scroll To Top Start ===== -->
+    <button
+        x-show="scrollTop"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-4"
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 translate-y-4"
+        @click="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="fixed bottom-8 right-8 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-brand-500 text-white shadow-lg transition-colors hover:bg-brand-600 focus:outline-none"
+        aria-label="Scroll to top"
+    >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+    <!-- ===== Scroll To Top End ===== -->
 </body>
 </html>
